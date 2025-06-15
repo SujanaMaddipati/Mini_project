@@ -1,0 +1,45 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfvars
+*.tfvars.json
+override.tf
+override.tf.json
+terraform.tfvars.backup
+
+# AWS credentials (never commit these)
+*.pem
+*.key
+.aws/
+
+# Sensitive files
+.env
+.env.*
+
+# Docker
+*.log
+docker-compose.override.yml
+.docker/
+
+# Kubernetes
+.kube/
+
+# System files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.bak
+.idea/
+.vscode/
+*.iml
+*.class
+
+# Node/Go/Python/etc. (optional depending on your app)
+node_modules/
+dist/
+vendor/
+__pycache__/
+
