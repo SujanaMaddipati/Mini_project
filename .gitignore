@@ -22,6 +22,7 @@ terraform.tfvars.backup
 *.log
 docker-compose.override.yml
 .docker/
+*:Zone.Identifier
 
 # Kubernetes
 .kube/
