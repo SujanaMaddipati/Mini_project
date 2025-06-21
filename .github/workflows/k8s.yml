@@ -1,39 +1,40 @@
-name : K8s build and deploy
+name: K8s build and deploy
 
-on: 
- push :
-  branches: [master]
+on:
+  push:
+    branches: [master]
+
 jobs:
-  k8s build and run on eks :
-  - name : platform
-    runs-on: Ubuntu-latest
-  steps :
-    - name : checkout
-      uses : action/checkout@v4
-    - name : install aws cli 
-      uses: aws-actions/configure-aws-credentials@v2
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ap-south-1 
-    - name: Install kubectl
-      run: |
-       curl -o kubectl https://amazon-eks.s3.ap-south-1.amazonaws.com/1.29.0/2024-03-29/bin/linux/amd64/kubectl
-       chmod +x ./kubectl
-       sudo mv ./kubectl /usr/local/bin
-    - name : kubeconfig
-      uses : aws eks update-kubeconfig --region ap-south-1 --name miniproject_cluster
-    - name : build deployment and service
-      run : |
-       kubectl apply -f deployment.yaml
-       kubectl apply -f service.yaml
-      workingdirectory: MINI PROJECT\k8s-manifests
-    - name : simple checks
-      run : |
-       kubectl get pods
-       
+  k8s-deploy:
+    name: K8s Platform
+    runs-on: ubuntu-latest
 
-   
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
+      - name: Configure AWS CLI
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
 
+      - name: Install kubectl
+        run: |
+          curl -o kubectl https://amazon-eks.s3.ap-south-1.amazonaws.com/1.29.0/2024-03-29/bin/linux/amd64/kubectl
+          chmod +x ./kubectl
+          sudo mv ./kubectl /usr/local/bin
 
+      - name: Configure kubeconfig
+        run: aws eks update-kubeconfig --region ap-south-1 --name miniproject_cluster
+
+      - name: Apply K8s deployment and service
+        run: |
+          kubectl apply -f deployment.yaml
+          kubectl apply -f service.yaml
+        working-directory: MINI PROJECT/k8s-manifests  # ✅ Correct YAML key and path separator
+
+      - name: Simple Checks
+        run: |
+          kubectl get pods
