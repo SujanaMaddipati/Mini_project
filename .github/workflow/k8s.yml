@@ -2,7 +2,7 @@ name : K8s build and deploy
 
 on: 
  push :
-  branches: [main]
+  branches: [master]
 jobs:
   k8s build and run on eks :
   - name : platform
