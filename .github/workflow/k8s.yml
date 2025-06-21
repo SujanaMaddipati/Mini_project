@@ -1,0 +1,39 @@
+name : K8s build and deploy
+
+on: 
+ push :
+  branches: [main]
+jobs:
+  k8s build and run on eks :
+  - name : platform
+    runs-on: Ubuntu-latest
+  steps :
+    - name : checkout
+      uses : action/checkout@v4
+    - name : install aws cli 
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-south-1 
+    - name: Install kubectl
+      run: |
+       curl -o kubectl https://amazon-eks.s3.ap-south-1.amazonaws.com/1.29.0/2024-03-29/bin/linux/amd64/kubectl
+       chmod +x ./kubectl
+       sudo mv ./kubectl /usr/local/bin
+    - name : kubeconfig
+      uses : aws eks update-kubeconfig --region ap-south-1 --name miniproject_cluster
+    - name : build deployment and service
+      run : |
+       kubectl apply -f deployment.yaml
+       kubectl apply -f service.yaml
+      workingdirectory: MINI PROJECT\k8s-manifests
+    - name : simple checks
+      run : |
+       kubectl get pods
+       
+
+   
+
+
+
