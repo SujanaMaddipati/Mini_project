@@ -1,50 +1,42 @@
-name : Terraform 
+name: Terraform
 
-on: 
-  push :
+on:
+  push:
     branches: [master]
-  
-jobs:
-   Terraform init validate plan and apply:
-     name: eks run using Terraform
-     runs-on: Ubuntu-latest
 
-   steps:
-     -  name : checkout
-        uses : action/checkout@v4
-     -  name : install Terraform 
+jobs:
+  terraform-deploy:
+    name: EKS Run using Terraform
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-           terraform_version: "1.1.7"
-     -  name : install aws cli 
+          terraform_version: "1.1.7"
+
+      - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ap-south-1 
-     - name : execute terraform init
-       run : terraform init
-       workingdirectory: MINI PROJECT
-     - name : execute terraform validate
-       run : terraform validate
-       workingdirectory: MINI PROJECT
-     - name : execute terraform plan 
-       run : terraform plan -var-file= "terraform.tfvars"
-       workingdirectory: MINI PROJECT
-     - name : execute terraform apply 
-       run : terrafotm apply -var-file ="terraform.tfvars""
-       workingdirectory: MINI PROJECT
-       environment: 
-        name : production 
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
 
+      - name: Terraform Init
+        run: terraform init
+        working-directory: MINI PROJECT
 
-  
-    
-         
-         
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: MINI PROJECT
 
+      - name: Terraform Plan
+        run: terraform plan -var-file="terraform.tfvars"
+        working-directory: MINI PROJECT
 
-
-
-
-    
+      - name: Terraform Apply
+        run: terraform apply -auto-approve -var-file="terraform.tfvars"
+        working-directory: MINI PROJECT
