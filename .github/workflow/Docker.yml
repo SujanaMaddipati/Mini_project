@@ -2,7 +2,10 @@ name : Docker build
 
 on: 
   push:
-    branches: [main]
+    branches: 
+      - main
+    workflow_dispatch:    
+
 jobs: 
   Docker build push and deploy :
    name: Docker platform
