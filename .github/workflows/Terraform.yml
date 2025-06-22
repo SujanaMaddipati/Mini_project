@@ -27,17 +27,17 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
-        working-directory: Mini_project
+        working-directory: . 
 
 
       - name: Terraform Validate
         run: terraform validate
-        working-directory: Mini_project
+        working-directory: . 
 
 
       - name: Terraform Plan
         run: terraform plan -var-file="terraform.tfvars"
-        working-directory: Mini_project
+        working-directory: . 
 
 
       - name: Terraform Apply
