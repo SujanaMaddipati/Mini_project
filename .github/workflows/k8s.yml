@@ -1,13 +1,15 @@
 name: K8s build and deploy
 
 on:
-  push:
-    branches: [master]
-
+ workflow_run:
+   workflows: [Docker]
+   types: 
+    - completed
 jobs:
   k8s-deploy:
     name: K8s Platform
     runs-on: ubuntu-latest
+
 
     steps:
       - name: Checkout code
