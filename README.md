@@ -11,6 +11,7 @@ This project demonstrates how to build and deploy a Dockerized application to an
 - **Docker** – Containerization
 - **Kubernetes** – Container Orchestration
 - **GitHub** – Version Control
+- **GitHub Actions** – CI/CD Automation
 
 ---
 
@@ -40,10 +41,18 @@ Infrastructure is managed using Terraform and includes:
   - Exposing the service
 
 ---
+## 🤖 CI/CD with GitHub Actions
 
-## 📂 Project Structure
+The entire workflow is automated using GitHub Actions:
 
 ```bash
+.github/workflows/
+├── terraform.yml         # Provisions infrastructure on AWS
+├── docker.yml            # Builds and pushes Docker image to Docker Hub
+└── k8s-deploy.yml        # Deploys the app to the EKS cluster
+----
+## 📂 Project Structure
+
 Mini_Project/
 ├── Modules/
 │   ├── VPC/
@@ -78,4 +87,13 @@ docker push <your-image-name>
 # 6. Deploy to EKS
 kubectl apply -f deployment.yaml
 kubectl apply -f service.yaml
+# 🚀 Mini Project: Deploy Dockerized App on AWS EKS using Terraform
+
+
+
+
+
+
+
+
 
